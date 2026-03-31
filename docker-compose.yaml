@@ -3,8 +3,8 @@ services:
   frontservice:
     container_name: front-backend
     build:
-      context: ./front/publish
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: CoreCms.Net.Web.Admin/Dockerfile
     ports:
       - 8088:80
     labels:
@@ -14,8 +14,8 @@ services:
   webapiservice:
     container_name: web-api
     build:
-      context: ./api/publish
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: CoreCms.Net.Web.WebApi/Dockerfile
     ports:
       - 8089:80
     labels:
