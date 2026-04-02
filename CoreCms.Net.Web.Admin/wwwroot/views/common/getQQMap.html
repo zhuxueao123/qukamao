@@ -32,9 +32,20 @@
     var debug = layui.setter.debug;
     var coordinateBoxIdName;
     var addressBoxIdName;
+    var geocoder;
     layui.data.done = function (d) {
         //开启调试情况下获取接口赋值数据
-        if (debug) { console.log(d.params.data); }
+        if (debug) { console.log(d && d.params ? d.params.data : d); }
+
+        if (!d || !d.params || !d.params.data) {
+            layer.msg("地图参数缺失，请关闭后重试", { icon: 2, anim: 6 });
+            return;
+        }
+
+        if (!window.qq || !qq.maps) {
+            layer.msg("地图SDK加载失败，请检查网络或腾讯地图Key配置", { icon: 2, anim: 6 });
+            return;
+        }
 
         coordinateBoxIdName = d.params.data.coordinateBoxIdName;
         addressBoxIdName = d.params.data.addressBoxIdName;
@@ -48,10 +59,23 @@
             var markerImage = "http://api.map.baidu.com/images/marker_red_sprite.png";
             var preLocationCenter = $("input[name=coordinate]").val();
             if (preLocationCenter == '') {
+                // 先用默认坐标渲染地图，避免城市定位回调异常时白屏。
+                center = new qq.maps.LatLng(39.9042, 116.4074);
+                setMap(center);
+
                 cityLocation = new qq.maps.CityService({
                     complete: function (result) {
-                        center = new qq.maps.LatLng(result.detail.latLng.lat, result.detail.latLng.lng);
-                        setMap(center);
+                        if (!result || !result.detail || !result.detail.latLng) {
+                            layer.msg("定位城市失败，请手动点击地图选择位置", { icon: 0 });
+                            return;
+                        }
+                        var cityCenter = new qq.maps.LatLng(result.detail.latLng.lat, result.detail.latLng.lng);
+                        if (map) {
+                            map.setCenter(cityCenter);
+                        }
+                        if (marker) {
+                            marker.setPosition(cityCenter);
+                        }
                     }
                 });
                 cityLocation.searchLocalCity();
@@ -61,7 +85,13 @@
                     parent.layer.msg("坐标位置错误");
                     return false;
                 }
-                center = new qq.maps.LatLng(arr[0], arr[1]);
+                var lat = Number(arr[0]);
+                var lng = Number(arr[1]);
+                if (isNaN(lat) || isNaN(lng)) {
+                    parent.layer.msg("坐标位置格式错误");
+                    return false;
+                }
+                center = new qq.maps.LatLng(lat, lng);
                 setMap(center);
             }
             function setMap(center) {
@@ -99,12 +129,26 @@
                 //调用Poi检索类。用于进行本地检索、周边检索等服务。
                 var searchService = new qq.maps.SearchService({
                     complete: function (results) {
+                        if (!results || !results.detail) {
+                            if (debug) { console.log("SearchService result invalid", results); }
+                            layer.msg("地址检索失败，请更换关键词重试", { icon: 0 });
+                            return;
+                        }
+
                         if (results.type === "CITY_LIST") {
+                            if (!results.detail.cities || !results.detail.cities.length) {
+                                layer.msg("未匹配到可用城市", { icon: 0 });
+                                return;
+                            }
                             searchService.setLocation(results.detail.cities[0].cityName);
                             searchService.search(keyword);
                             return;
                         }
-                        var pois = results.detail.pois;
+                        var pois = results.detail.pois || [];
+                        if (!pois.length) {
+                            layer.msg("未找到匹配地址，请调整关键词", { icon: 0 });
+                            return;
+                        }
                         var latlngBounds = new qq.maps.LatLngBounds();
                         for (var i = 0, l = pois.length; i < l; i++) {
                             var poi = pois[i];
@@ -122,12 +166,20 @@
                 //添加监听事件
                 qq.maps.event.addListener(ap, "confirm", function (res) {
                     console.log('查询地址');
+                    if (!res || !res.value) {
+                        layer.msg("地址输入无效，请重新选择", { icon: 0 });
+                        return;
+                    }
                     keyword = res.value;
                     searchService.search(keyword);
                 });
             }
 
             $("#save-map").on('click', function () {
+                if (!marker || !marker.position) {
+                    layer.msg("请先在地图上选择位置", { icon: 0 });
+                    return;
+                }
                 parent.$("#" + coordinateBoxIdName).val(marker.position.lat + ',' + marker.position.lng);
                 if (addressBoxIdName) {
                     setName(marker.position.lat, marker.position.lng);
@@ -141,9 +193,14 @@
     };
 
     function setName(lat, lng) {
+        if (!window.qq || !qq.maps || !addressBoxIdName) {
+            return;
+        }
         geocoder = new qq.maps.Geocoder({
             complete: function (result) {
-                parent.$("#"+addressBoxIdName).val(result.detail.address);
+                if (result && result.detail && result.detail.address) {
+                    parent.$("#" + addressBoxIdName).val(result.detail.address);
+                }
             }
         });
         var coord = new qq.maps.LatLng(lat, lng);

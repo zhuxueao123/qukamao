@@ -6,7 +6,7 @@
 //接口请求地址，如果需要不部署接口端的情况下测试uni-app，可以直接替换为官方测试接口：https://api.demo.coreshop.cn
 export const apiBaseUrl = 'https://quapi.yuanleitech.com';
 //项目静态资源请求地址，如果使用官方的静态文件地址可以直接替换为：https://files.cdn.coreshop.cn
-export const apiFilesUrl = 'http://qukamao.oss-cn-guangzhou.aliyuncs.com';
+export const apiFilesUrl = 'https://qukamao.oss-cn-guangzhou.aliyuncs.com';
 
 // #ifdef H5
 export const baseUrl = process.env.NODE_ENV === 'development' ? window.location.origin + '/' : apiBaseUrl

@@ -5,7 +5,7 @@
             <image class="logo" src="/static/images/logo/logo.png"></image>
             <view class="text-area">
                 <text class="title">
-                    CoreShop - Net开源商城系统
+                    qukamao
                 </text>
             </view>
             <view class="button-demo">
