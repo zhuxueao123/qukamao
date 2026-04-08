@@ -1,7 +1,190 @@
-﻿.content { width: 100%; /* #ifdef H5 */ height: calc(100vh - 44px); /* #endif */ }
-.map-body { width: 100%; height: 700rpx; position: relative; }
-.store-list { background-color: #fff; height: calc(100vh - 44px - 700rpx);
-    .coreshop-list-item { min-height: 160rpx;
-        .action { width: 130rpx; }
+﻿.store-page {
+    background: linear-gradient(180deg, #f1f6ff 0%, #f7f8fc 42%, #f5f6fa 100%);
+    min-height: 100vh;
+}
+
+.map-wrap {
+    position: relative;
+    padding: 18rpx 20rpx 0;
+}
+
+.map-body {
+    width: 100%;
+    height: 440rpx;
+    border-radius: 20rpx;
+    overflow: hidden;
+    box-shadow: 0 12rpx 28rpx rgba(22, 41, 90, 0.12);
+}
+
+.found-bar {
+    position: absolute;
+    left: 44rpx;
+    bottom: 18rpx;
+    padding: 10rpx 18rpx;
+    border-radius: 26rpx;
+    background: rgba(13, 23, 45, 0.8);
+    color: #ffffff;
+    font-size: 24rpx;
+    letter-spacing: 1rpx;
+}
+
+.panel {
+    margin-top: 16rpx;
+    background: #f5f6fa;
+    border-radius: 28rpx 28rpx 0 0;
+    padding: 18rpx 20rpx 0;
+}
+
+.search-box {
+    background: #ffffff;
+    padding: 12rpx 14rpx;
+    border-radius: 18rpx;
+    box-shadow: 0 8rpx 18rpx rgba(30, 40, 70, 0.06);
+}
+
+.sort-row {
+    display: flex;
+    align-items: center;
+    gap: 22rpx;
+    margin: 16rpx 6rpx 12rpx;
+}
+
+.sort-item {
+    font-size: 30rpx;
+    color: #474b58;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 8rpx;
+
+    &.active {
+        color: #2e62e8;
     }
+
+    &.active::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 6rpx;
+        border-radius: 6rpx;
+        background: linear-gradient(90deg, #2e62e8, #5b86ff);
+    }
+}
+
+.store-list {
+    height: calc(100vh - 44px - 440rpx - 190rpx);
+    /* #ifdef H5 */
+    height: calc(100vh - 440rpx - 190rpx);
+    /* #endif */
+}
+
+.card-list {
+    padding-bottom: 30rpx;
+}
+
+.store-card {
+    background: #ffffff;
+    border-radius: 22rpx;
+    padding: 22rpx;
+    margin-bottom: 18rpx;
+    box-shadow: 0 10rpx 24rpx rgba(16, 29, 66, 0.08);
+}
+
+.card-top {
+    display: flex;
+}
+
+.store-logo {
+    width: 112rpx;
+    height: 112rpx;
+    border-radius: 14rpx;
+    flex-shrink: 0;
+    background: #eef1f8;
+}
+
+.store-main {
+    flex: 1;
+    margin-left: 18rpx;
+    min-width: 0;
+}
+
+.title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14rpx;
+}
+
+.store-name {
+    font-size: 34rpx;
+    font-weight: 700;
+    color: #1f2433;
+    flex: 1;
+}
+
+.distance {
+    font-size: 24rpx;
+    color: #2e8de8;
+    background: #e9f5ff;
+    border-radius: 12rpx;
+    padding: 6rpx 12rpx;
+    flex-shrink: 0;
+}
+
+.status-row {
+    margin-top: 10rpx;
+    display: flex;
+    align-items: center;
+}
+
+.dot {
+    width: 12rpx;
+    height: 12rpx;
+    border-radius: 50%;
+    background: #39b54a;
+    margin-right: 10rpx;
+}
+
+.status {
+    color: #39b54a;
+    font-size: 25rpx;
+    font-weight: 500;
+}
+
+.addr {
+    margin-top: 10rpx;
+    color: #707482;
+    font-size: 25rpx;
+    line-height: 1.4;
+}
+
+.card-bottom {
+    margin-top: 18rpx;
+    border-top: 1px solid #edf0f6;
+    padding-top: 16rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16rpx;
+}
+
+.phone {
+    display: flex;
+    align-items: center;
+    color: #4c4f59;
+    font-size: 24rpx;
+    flex: 1;
+    min-width: 0;
+
+    text {
+        margin-left: 8rpx;
+    }
+}
+
+.btns {
+    display: flex;
+    align-items: center;
+    gap: 12rpx;
+    flex-shrink: 0;
 }

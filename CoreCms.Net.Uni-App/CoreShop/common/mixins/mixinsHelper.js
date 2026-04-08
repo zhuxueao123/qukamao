@@ -5,6 +5,11 @@ export const commonUse = {
         //路由跳转
         goRoute(url) {
             // 无参数
+            let switchTabs = ['/pages/index/default/default', '/pages/index/member/member', '/pages/index/store/store'];
+            if (switchTabs.indexOf(url) > -1) {
+                this.$u.route({ type: 'switchTab', url: url });
+                return;
+            }
             this.$u.route(url);
         },
         goRoute(url, params) {

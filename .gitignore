@@ -238,6 +238,10 @@ ClientBin/
 *.jfm
 *.pfx
 *.publishsettings
+
+# Local payment config and certificates
+/CoreCms.Net.Web.WebApi/appsettings.json
+/CoreCms.Net.Web.WebApi/WxPayCert/apiclient_cert.p12
 orleans.codegen.cs
 
 # Including strong name files can present a security risk

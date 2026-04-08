@@ -111,6 +111,9 @@
             "checkSiteMap" : false
         },
         "permission" : {
+            "scope.userLocation" : {
+                "desc" : "你的位置信息将用于门店导航和距离展示"
+            },
             "scope.userFuzzyLocation" : {
                 "desc" : "你的位置信息将用于小程序定位"
             }

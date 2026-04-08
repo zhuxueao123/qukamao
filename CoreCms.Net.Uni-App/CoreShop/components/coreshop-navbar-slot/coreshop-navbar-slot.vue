@@ -190,8 +190,8 @@
                     storeMap: {
                         name: '门店列表',
                         icon: 'home',
-                        router: '/pages/storeMap/storeMap',
-                        showItem: false
+                        router: '/pages/index/store/store',
+                        showItem: true
                     },
                     servicePackage: {
                         name: '服务商品',

@@ -281,8 +281,8 @@
                     storeMap: {
                         name: '门店列表',
                         icon: 'home',
-                        router: '/pages/storeMap/storeMap',
-                        showItem: false
+                        router: '/pages/index/store/store',
+                        showItem: true
                     },
                     servicePackage: {
                         name: '服务商品',
@@ -447,13 +447,8 @@
                     //显示-邀请好友
                     _this.other.invite.showItem = false;
                 }
-                if (this.config.showStoresSwitch == 1) {
-                    //不显示-门店展示列表
-                    _this.vas.storeMap.showItem = true;
-                } else if (this.config.showStoresSwitch == 2) {
-                    //显示-门店展示列表
-                    _this.vas.storeMap.showItem = false;
-                }
+                // 门店入口固定展示，不受后台开关影响
+                _this.vas.storeMap.showItem = true;
                 this.getUserInfo();
             },
             getUserInfo() {

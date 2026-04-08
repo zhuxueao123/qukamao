@@ -21,6 +21,8 @@ services:
     labels:
       description: 'web api'
     restart: always
+    volumes:
+      - ./CoreCms.Net.Web.WebApi/WxPayCert:/app/WxPayCert
   
   redis:
      image: redis:latest

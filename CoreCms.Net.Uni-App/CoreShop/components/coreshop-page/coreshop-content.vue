@@ -1,15 +1,43 @@
 <template>
     <view class="u-content">
-        <u-parse :html="content" :selectable="true"></u-parse>
+        <rich-text :nodes="richNodes"></rich-text>
     </view>
 
 </template>
 <script>
-    //视频和文本解析组件
+    // 文本内容组件，优先兼容装修组件传入的 coreshopdata 结构
     export default {
         name: 'coreshopContent',
         props: {
-            content: {}
+            content: {
+                type: [String, Object],
+                default: ''
+            },
+            coreshopdata: {
+                type: Object,
+                default: function () {
+                    return {};
+                }
+            }
+        },
+        computed: {
+            richNodes() {
+                if (typeof this.content === 'string' && this.content) {
+                    return this.content;
+                }
+
+                if (this.coreshopdata && this.coreshopdata.parameters) {
+                    const params = this.coreshopdata.parameters;
+                    if (typeof params.content === 'string' && params.content) {
+                        return params.content;
+                    }
+                    if (typeof params.value === 'string' && params.value) {
+                        return params.value;
+                    }
+                }
+
+                return '';
+            }
         },
         created() { },
         methods: {
