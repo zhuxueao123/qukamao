@@ -9,12 +9,14 @@
  ***********************************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CoreCms.Net.Auth.HttpContextUser;
 using CoreCms.Net.Configuration;
 using CoreCms.Net.IRepository;
 using CoreCms.Net.IRepository.UnitOfWork;
 using CoreCms.Net.IServices;
+using CoreCms.Net.Loging;
 using CoreCms.Net.Model.Entities;
 using CoreCms.Net.Model.ViewModels.UI;
 using CoreCms.Net.Utility.Extensions;
@@ -114,7 +116,19 @@ namespace CoreCms.Net.Services
                 OpenId = openId
             };
 
-            var response = await _client.ExecuteAsync(request, _optionsAccessor.Value);
+            WeChatPayUnifiedOrderResponse response;
+            try
+            {
+                response = await _client.ExecuteAsync(request, _optionsAccessor.Value);
+            }
+            catch (Exception ex)
+            {
+                NLogUtil.WriteAll(NLog.LogLevel.Error, LogType.Order, "微信支付下单异常", ex.ToString(), ex);
+                jm.status = false;
+                jm.msg = $"微信支付下单失败：{ex.Message}";
+                return jm;
+            }
+
             if (response.ReturnCode == WeChatPayCode.Success && response.ResultCode == WeChatPayCode.Success)
             {
                 var req = new WeChatPayJsApiSdkRequest
@@ -122,7 +136,18 @@ namespace CoreCms.Net.Services
                     Package = "prepay_id=" + response.PrepayId
                 };
 
-                var parameter = await _client.ExecuteAsync(req, _optionsAccessor.Value);
+                IDictionary<string, string> parameter;
+                try
+                {
+                    parameter = await _client.ExecuteAsync(req, _optionsAccessor.Value);
+                }
+                catch (Exception ex)
+                {
+                    NLogUtil.WriteAll(NLog.LogLevel.Error, LogType.Order, "微信支付参数生成异常", ex.ToString(), ex);
+                    jm.status = false;
+                    jm.msg = $"微信支付参数生成失败：{ex.Message}";
+                    return jm;
+                }
                 // 将参数(parameter)给 公众号前端 让他在微信内H5调起支付(https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_7&index=6)
                 parameter.Add("paymentId", entity.paymentId);
 
@@ -167,7 +192,18 @@ namespace CoreCms.Net.Services
                 RefundFee = Convert.ToInt32(refundInfo.money * 100),
                 NotifyUrl = weChatRefundUrl
             };
-            var response = await _client.ExecuteAsync(request, _optionsAccessor.Value);
+            WeChatPayRefundResponse response;
+            try
+            {
+                response = await _client.ExecuteAsync(request, _optionsAccessor.Value);
+            }
+            catch (Exception ex)
+            {
+                NLogUtil.WriteAll(NLog.LogLevel.Error, LogType.Refund, "微信支付退款异常", ex.ToString(), ex);
+                jm.status = false;
+                jm.msg = $"微信支付退款失败：{ex.Message}";
+                return jm;
+            }
 
             if (response.ReturnCode == WeChatPayCode.Success && response.ResultCode == WeChatPayCode.Success)
             {

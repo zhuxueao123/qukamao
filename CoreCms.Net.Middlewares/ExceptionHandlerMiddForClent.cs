@@ -57,7 +57,7 @@ namespace CoreCms.Net.Middlewares
         {
             if (ex == null) return;
 
-            NLogUtil.WriteAll(NLog.LogLevel.Error, LogType.ApiRequest, "全局捕获异常", "全局捕获异常", new Exception("全局捕获异常", ex));
+            NLogUtil.WriteAll(NLog.LogLevel.Error, LogType.ApiRequest, "全局捕获异常", ex.ToString(), ex);
 
             await WriteExceptionAsync(context, ex).ConfigureAwait(false);
         }
