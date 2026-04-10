@@ -149,8 +149,30 @@ namespace CoreCms.Net.Services
                 }
                 else
                 {
+                    var responseJson = JsonConvert.SerializeObject(response);
+                    NLogUtil.WriteAll(NLog.LogLevel.Error, LogType.Order, "微信支付下单失败响应", responseJson);
+
+                    var responseData = JObject.FromObject(response);
+                    var returnMsg = responseData["return_msg"]?.ObjectToString();
+                    if (string.IsNullOrEmpty(returnMsg))
+                    {
+                        returnMsg = responseData["ReturnMsg"]?.ObjectToString();
+                    }
+
+                    var errCode = responseData["err_code"]?.ObjectToString();
+                    if (string.IsNullOrEmpty(errCode))
+                    {
+                        errCode = responseData["ErrCode"]?.ObjectToString();
+                    }
+
+                    var errCodeDes = responseData["err_code_des"]?.ObjectToString();
+                    if (string.IsNullOrEmpty(errCodeDes))
+                    {
+                        errCodeDes = responseData["ErrCodeDes"]?.ObjectToString();
+                    }
+
                     jm.status = false;
-                    jm.msg = "微信建立支付请求失败";
+                    jm.msg = $"微信建立支付请求失败：{errCodeDes ?? returnMsg ?? errCode ?? "未知错误"}";
                     jm.otherData = response;
                 }
             }
@@ -203,8 +225,30 @@ namespace CoreCms.Net.Services
                 }
                 else
                 {
+                    var responseJson = JsonConvert.SerializeObject(response);
+                    NLogUtil.WriteAll(NLog.LogLevel.Error, LogType.Refund, "微信支付退款失败响应", responseJson);
+
+                    var responseData = JObject.FromObject(response);
+                    var returnMsg = responseData["return_msg"]?.ObjectToString();
+                    if (string.IsNullOrEmpty(returnMsg))
+                    {
+                        returnMsg = responseData["ReturnMsg"]?.ObjectToString();
+                    }
+
+                    var errCode = responseData["err_code"]?.ObjectToString();
+                    if (string.IsNullOrEmpty(errCode))
+                    {
+                        errCode = responseData["ErrCode"]?.ObjectToString();
+                    }
+
+                    var errCodeDes = responseData["err_code_des"]?.ObjectToString();
+                    if (string.IsNullOrEmpty(errCodeDes))
+                    {
+                        errCodeDes = responseData["ErrCodeDes"]?.ObjectToString();
+                    }
+
                     jm.status = false;
-                    jm.msg = "退款失败";
+                    jm.msg = $"退款失败：{errCodeDes ?? returnMsg ?? errCode ?? "未知错误"}";
                     jm.data = response;
                 }
             }
