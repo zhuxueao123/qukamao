@@ -8131,7 +8131,7 @@ insert  into `SysMenu`(`id`,`parentId`,`identificationCode`,`menuName`,`menuIcon
 (71,69,'articletype','文章分类','','content/article/articletype/index','',0,1,'article:articletype:index',NULL,NULL,0,0,'2020-03-21 01:07:13',NULL),
 (72,717,'notice','公告列表','','content/notice/index','',0,1,'',NULL,NULL,0,0,'2020-03-21 01:07:13',NULL),
 (73,717,'advert','广告管理','layui-icon-rss','','',0,10,'',NULL,NULL,0,0,'2020-03-21 01:07:13',NULL),
-(74,73,'advertPosition','广告位置列表','','content/advert/advertPosition/index','',0,1,'advert:advertPosition:index',NULL,NULL,0,0,'2020-03-21 01:07:13',NULL),
+(74,73,'advertPosition','广告位置列表','','content/advert/advertposition/index','',0,1,'advert:advertPosition:index',NULL,NULL,0,0,'2020-03-21 01:07:13',NULL),
 (75,73,'advertisement','广告列表','','content/advert/advertisement/index','',0,1,'advert:advertisement:index',NULL,NULL,0,0,'2020-03-21 01:07:13',NULL),
 (76,59,'billreship','退货单列表','','order/billreship/index','order/billreship/list',0,40,'order:billreship:index',NULL,NULL,0,0,'2020-07-17 01:08:12','2020-07-17 16:20:27'),
 (77,0,'promotion','促销中心','layui-icon-star','','',0,40,'',NULL,NULL,0,0,'2020-03-21 01:07:13',NULL),

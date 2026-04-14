@@ -386,6 +386,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
 
             var fileName = file.FileName;
             var fileExt = Path.GetExtension(fileName).ToLowerInvariant();
+            var allowedFileTypes = filesStorageOptions.FileTypes.Split(',').Select(x => x.Trim().ToLowerInvariant()).ToArray();
 
             //检查大小
             if (file.Length > maxSize)
@@ -395,7 +396,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             }
 
             //检查文件扩展名
-            if (string.IsNullOrEmpty(fileExt) || Array.IndexOf(filesStorageOptions.FileTypes.Split(','), fileExt.Substring(1).ToLower()) == -1)
+            if (string.IsNullOrEmpty(fileExt) || Array.IndexOf(allowedFileTypes, fileExt.Substring(1).ToLowerInvariant()) == -1)
             {
                 jm.msg = "上传文件扩展名是不允许的扩展名,请上传后缀名为：" + filesStorageOptions.FileTypes;
                 return jm;
@@ -524,6 +525,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
 
             var fileName = file.FileName;
             var fileExt = Path.GetExtension(fileName).ToLowerInvariant();
+            var allowedFileTypes = filesStorageOptions.FileTypes.Split(',').Select(x => x.Trim().ToLowerInvariant()).ToArray();
 
             //检查大小
             if (file.Length > maxSize)
@@ -533,7 +535,7 @@ namespace CoreCms.Net.Web.Admin.Controllers
             }
 
             //检查文件扩展名
-            if (string.IsNullOrEmpty(fileExt) || Array.IndexOf(filesStorageOptions.FileTypes.Split(','), fileExt.Substring(1).ToLower()) == -1)
+            if (string.IsNullOrEmpty(fileExt) || Array.IndexOf(allowedFileTypes, fileExt.Substring(1).ToLowerInvariant()) == -1)
             {
                 jm.error.message = "上传文件扩展名是不允许的扩展名,请上传后缀名为：" + filesStorageOptions.FileTypes;
                 return jm;

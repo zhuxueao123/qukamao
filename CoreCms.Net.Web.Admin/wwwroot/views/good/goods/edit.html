@@ -154,9 +154,17 @@
                             <div class="layui-form-item">
                                 <label class="layui-form-label" for="video">视频：</label>
                                 <div class="layui-input-inline layui-inline-10">
-                                    <input name="goods[video]" size="15" autocomplete="off" class="layui-input" value="{{d.data.model.video ||'' }}" lay-reqText="请输入【视频地址】" />
+                                    <input name="goods[video]" id="goodVideo" size="15" autocomplete="off" class="layui-input" value="{{d.data.model.video ||'' }}" lay-reqText="请输入【视频地址】" />
+                                </div>
+                                <div class="layui-input-inline">
+                                    <button type="button" class="layui-btn" id="upBtnVideo">上传视频</button>
                                 </div>
                                 <div class="layui-form-mid">支持常用视频播放格式。</div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block" style="margin-left: 110px;">
+                                    <video id="viewVideoBox" src="{{d.data.model.video ||'' }}" style="width: 240px;max-height: 160px;" controls></video>
+                                </div>
                             </div>
                         </div>
 
@@ -796,6 +804,26 @@
                         }
                     });
                     form.render();
+                });
+
+                //商品视频上传
+                upload.render({
+                    elem: '#upBtnVideo'
+                    , url: layui.setter.apiUrl + 'Api/Tools/UploadFiles'
+                    , accept: 'video'
+                    , exts: 'mp4|webm|ogv'
+                    , done: function (res) {
+                        if (res.code > 0) {
+                            return layer.msg(res.msg || '上传失败');
+                        }
+                        var videoUrl = res.data.fileUrl;
+                        $('#goodVideo').val(videoUrl);
+                        $('#viewVideoBox').attr('src', videoUrl);
+                        layer.msg(res.msg || '上传成功');
+                    }
+                    , error: function () {
+                        layer.msg('视频上传失败', { icon: 2, anim: 6 });
+                    }
                 });
 
                 //封面图图片上传

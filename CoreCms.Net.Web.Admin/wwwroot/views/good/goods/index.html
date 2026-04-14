@@ -103,6 +103,10 @@
         //开启调试情况下获取接口赋值数据
         if (debug) { console.log(d); }
 
+        if (!d || !d.data) {
+            layer.msg('获取商品列表数据失败，请刷新页面重试', { icon: 2, anim: 6 });
+            return;
+        }
         indexData = d.data;
         layui.use(['index', 'table', 'laydate', 'util', 'coredropdown', 'coreHelper', 'element', 'xmSelect'],
             function () {
@@ -227,6 +231,7 @@
                             { field: 'mktprice', title: '市场价', sort: false, width: 70, templet: function (data) { return '￥' + data.mktprice } },
                             {
                                 field: 'goodsCategoryId', title: '分类', sort: false, width: 80, templet: function (data) {
+                                    if (!d || !d.data || !d.data.categoriesAll) return '';
                                     for (var i = 0; i < d.data.categoriesAll.length; i++) {
                                         if (d.data.categoriesAll[i].id === data.goodsCategoryId) {
                                             return d.data.categoriesAll[i].name;
@@ -237,6 +242,7 @@
                             },
                             {
                                 field: 'brandId', title: '品牌', sort: false, width: 80, templet: function (data) {
+                                    if (!d || !d.data || !d.data.brands) return '';
                                     for (var i = 0; i < d.data.brands.length; i++) {
                                         if (d.data.brands[i].id === data.brandId) {
                                             return d.data.brands[i].name;

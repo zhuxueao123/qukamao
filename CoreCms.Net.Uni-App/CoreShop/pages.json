@@ -794,12 +794,6 @@
         "selectedIconPath": "static/images/indexMenus/index02_1.png"
       },
       {
-        "pagePath": "pages/index/store/store",
-        "text": "门店",
-        "iconPath": "static/images/common/menu.png",
-        "selectedIconPath": "static/images/common/menu.png"
-      },
-      {
         "pagePath": "pages/index/cart/cart",
         "text": "购物车",
         "iconPath": "static/images/indexMenus/index03.png",

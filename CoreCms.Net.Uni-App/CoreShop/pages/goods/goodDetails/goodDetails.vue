@@ -4,6 +4,11 @@
         <u-navbar :is-back="false" :background="background" title="商品详情" title-color="#fff">
              <coreshopNavbarSlot titleColor="#fff" backgroundColor="#e54d42" leftIconColor="#fff" :leftIconSize="33"></coreshopNavbarSlot>
         </u-navbar>
+        <!--视频-->
+        <view v-if="goodsInfo.video" class="coreshop-full-screen-banner-swiper-box">
+            <video :src="goodsInfo.video" class="goods-video" controls :show-fullscreen-btn="true" :show-play-btn="true" :enable-progress-gesture="true" object-fit="contain"></video>
+        </view>
+
         <!--幻灯片-->
         <view class="coreshop-full-screen-banner-swiper-box">
             <swiper class="screen-swiper" circular autoplay @change="bannerSwiper">
@@ -397,7 +402,7 @@
                 bannerCur: 0,
                 current: 0, // init tab位
                 goodsId: 0, // 商品id
-                goodsInfo: { album: [] }, // 商品详情
+                goodsInfo: { album: [], video: '' }, // 商品详情
                 cartNums: 0, // 购物车数量
                 product: {}, // 货品详情
                 shopRecommendData: [], // 本店推荐数据
@@ -892,4 +897,9 @@
     }
 </script>
 <style lang="scss">
+.goods-video {
+    width: 100%;
+    height: 750rpx;
+    background-color: #000;
+}
 </style>
