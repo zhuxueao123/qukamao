@@ -551,12 +551,26 @@
                             language: 'zh-cn',
                         })
                     .then(editor => {
+                        const normalizeEditorHtml = function (html) {
+                            if (!html) {
+                                return '';
+                            }
+                            var text = (typeof html === 'string') ? html : String(html);
+                            // 兼容历史数据被 HTML 实体编码导致编辑器空白的问题
+                            if (text.indexOf('&lt;') > -1 || text.indexOf('&gt;') > -1 || text.indexOf('&amp;') > -1) {
+                                var decoder = document.createElement('textarea');
+                                decoder.innerHTML = text;
+                                text = decoder.value;
+                            }
+                            return text;
+                        };
+
                         editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
                             return new UploadAdapter(loader);
                         };
                         const toolbarContainer = document.querySelector('#toolbar-container');
                         toolbarContainer.appendChild(editor.ui.view.toolbar.element);
-                        editor.setData(d.data.model.intro);
+                        editor.setData(normalizeEditorHtml(d.data.model.intro));
                         window.editor = editor;
                     })
                     .catch(error => {
